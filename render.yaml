@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: vidyalaya-license-server
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn license_server:app
+    envVars:
+      - key: ADMIN_SECRET
+        value: SAADAT_ADMIN_2025        # ← ZAROOR BADLO
+      - key: SERVER_SECRET
+        value: VIDYA_SERVER_KEY_XYZ     # ← ZAROOR BADLO
+      - key: GMAIL_USER
+        value: teremail@gmail.com       # ← Apna Gmail
+      - key: GMAIL_PASS
+        value: xxxx xxxx xxxx xxxx      # ← Gmail App Password
+      - key: NOTIFY_EMAIL
+        value: teremail@gmail.com       # ← Notification kahan aaye
