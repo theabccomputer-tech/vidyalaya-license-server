@@ -39,13 +39,10 @@ NOTIFY_EMAIL   = os.getenv('NOTIFY_EMAIL', '')                      # tujhe noti
 
 MAX_FREE_REACTIVATIONS = 2   # Isse zyada pe ₹500 charge
 
-# ── Tables auto-create on startup (Gunicorn ke saath bhi) ─────
-def create_tables():
-    with app.app_context():
-        db.create_all()
-        print("✅ Database tables ready")
-
-create_tables()
+# ── Tables auto-create on startup ─────────────────────────────
+with app.app_context():
+    db.create_all()
+    print("✅ Database tables ready")
 
 # ══════════════════════════════════════════════════════════════
 # DATABASE MODELS
@@ -665,6 +662,18 @@ def admin_create_license():
 @app.route('/ping')
 def ping():
     return jsonify({'status': 'ok', 'service': 'VidyalayaPro License Server'})
+
+# Manual DB init (ek baar run karo agar tables nahi bani)
+@app.route('/init-db')
+def init_db():
+    secret = request.args.get('secret', '')
+    if secret != ADMIN_SECRET:
+        return 'Unauthorized', 403
+    try:
+        db.create_all()
+        return jsonify({'status': 'ok', 'message': '✅ Tables created successfully!'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 
 if __name__ == '__main__':
