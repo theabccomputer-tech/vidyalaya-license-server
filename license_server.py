@@ -39,6 +39,14 @@ NOTIFY_EMAIL   = os.getenv('NOTIFY_EMAIL', '')                      # tujhe noti
 
 MAX_FREE_REACTIVATIONS = 2   # Isse zyada pe ₹500 charge
 
+# ── Tables auto-create on startup (Gunicorn ke saath bhi) ─────
+def create_tables():
+    with app.app_context():
+        db.create_all()
+        print("✅ Database tables ready")
+
+create_tables()
+
 # ══════════════════════════════════════════════════════════════
 # DATABASE MODELS
 # ══════════════════════════════════════════════════════════════
